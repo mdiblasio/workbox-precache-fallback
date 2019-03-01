@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Welcome to Glitch!</title>
+  <meta name="description" content="A cool thing made with Glitch">
+  <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  body {
+    margin: 20px;
+  }
+
+  #consoleContainer {
+    width: 500px;
+    height: 200px;
+    background-color: lightgray;
+    padding: 20px;
+  }
+
+  button {
+    font-size: 20px;
+    display: block;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  #fileInput {
+    margin: 10px 0px;
+    padding: 5px;
+    font-size: 15px;
+    width: 300px;
+  }
+
+  code {
+    display: block;
+  }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>
+      Workbox v4 Demo
+    </h1>
+  </header>
+
+  <main>
+    <h3>Console:</h3>
+    <div id="consoleContainer"></div>
+
+
+    <input id="fileInput" type="text" value="main-bundle.oldhash.js" />
+    <script>
+    let fileInput = document.getElementById('fileInput');
+    let consoleContainer = document.getElementById("consoleContainer");
+
+    function printToConsole(msg) {
+      let p = document.createElement('code');
+      p.innerText = msg;
+      consoleContainer.appendChild(p);
+    }
+
+    function fetchAndExecute() {
+      console.log(`fetchAndExecute(${fileInput.value})`);
+
+      const scriptPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        document.body.appendChild(script);
+        script.onload = resolve;
+        script.onerror = reject;
+        script.async = true;
+        script.src = fileInput.value;
+      });
+    }
+    </script>
+    <button onclick="fetchAndExecute()">Fetch and Execute File</button>
+
+
+    <script>
+    // Check that service workers are registered
+    if ('serviceWorker' in navigator) {
+      // Use the window load event to keep the page load performant
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+    </script>
+</body>
+
+</html>
